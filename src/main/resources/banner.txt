@@ -1,0 +1,18 @@
+${AnsiColor.RED}
+
+ooOoOOo o.     O o      'O o.OOoOoo o.     O oOoOOoOOo  .oOOOo.  `OooOOo.  o       O 
+   O    Oo     o O       o  O       Oo     o     o     .O     o.  o     `o O       o 
+   o    O O    O o       O  o       O O    O     o     O       o  O      O `o     O' 
+   O    O  o   o o       o  ooOO    O  o   o     O     o       O  o     .O   O   o   
+   o    O   o  O O      O'  O       O   o  O     o     O       o  OOooOO'     `O'    
+   O    o    O O `o    o    o       o    O O     O     o       O  o    o       o     
+   O    o     Oo  `o  O     O       o     Oo     O     `o     O'  O     O      O     
+ooOOoOo O     `o   `o'     ooOooOoO O     `o     o'     `OoooO'   O      o     O     
+                                                                                     
+                                                                                     
+                                                                                                                                                         
+${AnsiColor.BRIGHT_BLUE}:: ======= EDTS - ${spring.application.name} ======= ::
+${AnsiColor.GREEN}:: App Version ${AnsiColor.BLUE} ${application.version}
+${AnsiColor.GREEN}:: App Description ${AnsiColor.BLUE} ${application.description}
+${AnsiColor.GREEN}:: Running Spring Boot ${AnsiColor.RED}${spring-boot.version} 
+${AnsiColor.DEFAULT}

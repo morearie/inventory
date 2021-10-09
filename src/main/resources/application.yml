@@ -1,0 +1,76 @@
+server:
+  port: ${PORT:8080}
+  tomcat:
+    accesslog:
+      enabled: false
+    basedir: logs
+    
+  
+logging:
+  file:
+    name: logs/${spring.application.name}.log
+    max-size: 1GB
+    max-history: 365
+  level:
+    root: info
+    org.zalando.logbook: trace
+    com.arie.test.inventory: debug
+
+spring:
+  application:
+    name: inventory
+  profiles:
+    active: default
+  messages:
+    basename: i18n/messages
+    use-code-as-default-message: true
+  h2:
+    console:
+      enabled: true
+      path: /h2
+  datasource:
+    url: h2:file:~/db/myOrg.db;DB_CLOSE_ON_EXIT=FALSE;DB_CLOSE_DELAY=-1;
+    username: admin
+    password: admin
+    driver-class-name: org.h2.Driver
+    hikari:
+      maximum-pool-size: 5
+      max-lifetime: 60000
+    tomcat:
+      test-while-idle: true
+      test-on-borrow: true
+      validation-query: SELECT 1
+  codec.max-in-memory-size: 20MB
+  
+# Hibernate ddl auto (create, create-drop, validate, update)
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: true
+    show-sql: true
+    open-in-view: false
+    database-platform: org.hibernate.dialect.H2Dialect
+
+host:
+  ip: localhost
+  port: ${server.port}
+  path: ""
+
+cors:
+  allowed-origins: "*"
+  allowed-methods: "*"
+  allowed-headers: "*"
+  exposed-headers: "Authorization,Link,X-Total-Count"
+  allow-credentials: true
+  max-age: 18000
+swagger:
+  host: ${host.ip}:${host.port}
+  path: /${host.path}
+
+# ========== custom property =============
+application:
+  description: ^project.description^
+  version: ^project.version^
