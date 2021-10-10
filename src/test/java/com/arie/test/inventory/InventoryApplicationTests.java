@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.DisplayName;
@@ -19,7 +20,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.arie.test.inventory.constant.BadReqConstant;
 import com.arie.test.inventory.dto.ProductDTO;
-import com.arie.test.inventory.exception.BadRequestException;
 import com.arie.test.inventory.model.Product;
 import com.arie.test.inventory.repository.ProductRepository;
 import com.arie.test.inventory.service.OrderService;
@@ -97,29 +97,31 @@ class InventoryApplicationTests {
 	@Order(3)
 	@DisplayName("test updating stock by concurrently with out of stock")
 	void testStockProductService_concurrent_oos() throws InterruptedException {
-		try {
-			// given
-			ProductDTO dto = new ProductDTO();
-			dto.setTitle("product3");
-			dto.setDescription("testing product 3");
-			dto.setPrice(30000);
-			dto.setStock(15);
-			dto = productService.create(dto);
-			final long id = dto.getId();
 
-			// when
-			final ExecutorService executor = Executors.newFixedThreadPool(stockQty2s.size());
+		// given
+		ProductDTO dto = new ProductDTO();
+		dto.setTitle("product3");
+		dto.setDescription("testing product 3");
+		dto.setPrice(30000);
+		dto.setStock(15);
+		dto = productService.create(dto);
+		final long id = dto.getId();
+
+		// when
+		final ExecutorService executor = Executors.newFixedThreadPool(stockQty2s.size());
+		final Future<?> future = executor.submit(() -> {
 			for (final int sq : stockQty2s) {
 				executor.execute(() -> orderService.updateStock(id, sq));
 			}
-
-			executor.shutdown();
-			executor.awaitTermination(1, TimeUnit.MINUTES);
-		} catch (BadRequestException e) {
-			// then
+		});
+		try {
+			future.get();
+		} catch (Exception e) {
 			final String expected = BadReqConstant.PRODUCT_STOCK;
 			assertEquals(expected, e.getMessage());
 		}
+		executor.shutdown();
+		executor.awaitTermination(1, TimeUnit.MINUTES);
 
 	}
 

@@ -15,5 +15,14 @@ public interface ProductMapper extends BaseMapper<ProductDTO, Product> {
 		product.setDescription(productDTO.getDescription());
 		return product;
 	}
+	
+	default Product fromId(Long id) {
+        if (id == null) {
+            return null;
+        }
+        Product product = new Product();
+        product.setId(id);
+        return product;
+    }
 
 }

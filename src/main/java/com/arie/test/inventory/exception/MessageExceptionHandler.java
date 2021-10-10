@@ -1,14 +1,12 @@
 package com.arie.test.inventory.exception;
 
 import java.nio.file.AccessDeniedException;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 import javax.naming.AuthenticationException;
 import javax.persistence.EntityNotFoundException;
 import javax.security.auth.login.LoginException;
 
-import org.springframework.context.MessageSource;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -34,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MessageExceptionHandler extends ResponseEntityExceptionHandler {
 
 	private static final String UNEXPECTED_ERROR = "Unexpected error";
-	private final MessageSource messageSource;
+//	private final MessageSource messageSource;
 
 	/**
 	 * Handle general error message.
@@ -56,9 +54,9 @@ public class MessageExceptionHandler extends ResponseEntityExceptionHandler {
 	 * @return response entity with error message
 	 */
 	@ExceptionHandler(BadRequestException.class)
-	public ResponseEntity<GeneralWrapper<Object>> badRequest(BadRequestException ex, Locale locale) {
+	public ResponseEntity<GeneralWrapper<Object>> badRequest(BadRequestException ex) {
 		printError(ex);
-		String errorMessage = messageSource.getMessage(ex.getMessage(), null, locale);
+		String errorMessage = ex.getMessage();
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 				.body(new GeneralWrapper<>().fail(HttpStatus.BAD_REQUEST, errorMessage));
 	}
@@ -70,9 +68,9 @@ public class MessageExceptionHandler extends ResponseEntityExceptionHandler {
 	 * @return response entity with error message
 	 */
 	@ExceptionHandler(EntityNotFoundException.class)
-	public ResponseEntity<GeneralWrapper<Object>> notFound(EntityNotFoundException ex, Locale locale) {
+	public ResponseEntity<GeneralWrapper<Object>> notFound(EntityNotFoundException ex) {
 		printError(ex);
-		String errorMessage = messageSource.getMessage(ex.getMessage(), null, locale);
+		String errorMessage = ex.getMessage();
 		return ResponseEntity.status(HttpStatus.NOT_FOUND)
 				.body(new GeneralWrapper<>().fail(HttpStatus.NOT_FOUND, errorMessage));
 	}
@@ -155,7 +153,7 @@ public class MessageExceptionHandler extends ResponseEntityExceptionHandler {
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
 		// Get all errors
 		String errors = ex.getBindingResult().getFieldErrors().stream().map(
-				e -> e.getField() + ": " + messageSource.getMessage(e.getDefaultMessage(), null, request.getLocale()))
+				e -> e.getField() + ": " + ex.getMessage())
 				.collect(Collectors.joining("; "));
 
 		printError(ex);
@@ -181,7 +179,7 @@ public class MessageExceptionHandler extends ResponseEntityExceptionHandler {
 			HttpStatus status, WebRequest request) {
 		printError(ex);
 		super.handleExceptionInternal(ex, body, headers, status, request);
-		String errorMessage = messageSource.getMessage(ex.getMessage(), null, request.getLocale());
+		String errorMessage = ex.getMessage();
 		return ResponseEntity.status(status).headers(headers)
 				.body(new GeneralWrapper<>().fail(status, errorMessage));
 	}

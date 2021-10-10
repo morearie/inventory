@@ -7,4 +7,5 @@ import lombok.NoArgsConstructor;
 public class BadReqConstant {
 	public static final String PRODUCT_NOT_EXIST = "Product is not exist";
 	public static final String PRODUCT_STOCK = "Insufficient stock";
+	public static final String ORDER_NOT_EXIST = "ORDER is not exist";
 }

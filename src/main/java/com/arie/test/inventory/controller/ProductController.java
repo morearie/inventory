@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.arie.test.inventory.dto.GeneralWrapper;
 import com.arie.test.inventory.dto.ProductDTO;
+import com.arie.test.inventory.service.OrderService;
 import com.arie.test.inventory.service.ProductService;
 
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 public class ProductController {
 
 	private final ProductService productService;
+	private final OrderService orderService;
 
 	@PostMapping()
 	public ResponseEntity<GeneralWrapper<ProductDTO>> addProduct(@RequestBody ProductDTO request)
@@ -50,10 +52,24 @@ public class ProductController {
 		return ResponseEntity.ok().body(new GeneralWrapper<ProductDTO>().success(HttpStatus.OK, result));
 	}
 
-	@GetMapping("s")
+	@GetMapping("/all")
 	public ResponseEntity<GeneralWrapper<Page<ProductDTO>>> getProducts(Pageable pageable) {
 		Page<ProductDTO> results = productService.getPage(pageable);
 		return ResponseEntity.ok().body(new GeneralWrapper<Page<ProductDTO>>().success(HttpStatus.OK, results));
+	}
+
+	@PutMapping("/{id}/increase-stock/{qty}")
+	public ResponseEntity<GeneralWrapper<ProductDTO>> increaseStockProduct(@PathVariable long id,
+			@PathVariable int qty) {
+		orderService.updateStock(id, qty);
+		return ResponseEntity.ok().body(new GeneralWrapper<ProductDTO>().success(HttpStatus.OK));
+	}
+
+	@PutMapping("/{id}/decrease-stock/{qty}")
+	public ResponseEntity<GeneralWrapper<ProductDTO>> decreaseStockProduct(@PathVariable long id,
+			@PathVariable int qty) {
+		orderService.updateStock(id, -qty);
+		return ResponseEntity.ok().body(new GeneralWrapper<ProductDTO>().success(HttpStatus.OK));
 	}
 
 }

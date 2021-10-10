@@ -46,6 +46,13 @@ public class ProductService {
 		return productRepository.findById(id).map(productMapper::toDto)
 				.orElseThrow(() -> new BadRequestException(BadReqConstant.PRODUCT_NOT_EXIST));
 	}
+	
+	@Transactional(readOnly = true)
+	public Product getEntityById(long id) {
+		logger.debug("Get Product by id: {}", id);
+		return productRepository.findById(id)
+				.orElseThrow(() -> new BadRequestException(BadReqConstant.PRODUCT_NOT_EXIST));
+	}
 
 	@Transactional(readOnly = true)
 	public Page<ProductDTO> getPage(Pageable pageable) {

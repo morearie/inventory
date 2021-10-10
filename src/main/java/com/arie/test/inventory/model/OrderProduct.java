@@ -2,6 +2,7 @@ package com.arie.test.inventory.model;
 
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -39,7 +40,7 @@ public class OrderProduct extends BaseEntity {
 	@JoinColumn(name="order_id", nullable=false)
     private Order order;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="product_id", nullable=false)
     private Product product;
 }
