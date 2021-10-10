@@ -11,7 +11,7 @@ ooOOoOo O     `o   `o'     ooOooOoO O     `o     o'     `OoooO'   O      o     O
                                                                                      
                                                                                      
                                                                                                                                                          
-${AnsiColor.BRIGHT_BLUE}:: ======= EDTS - ${spring.application.name} ======= ::
+${AnsiColor.BRIGHT_BLUE}:: ======= ARIE - ${spring.application.name} ======= ::
 ${AnsiColor.GREEN}:: App Version ${AnsiColor.BLUE} ${application.version}
 ${AnsiColor.GREEN}:: App Description ${AnsiColor.BLUE} ${application.description}
 ${AnsiColor.GREEN}:: Running Spring Boot ${AnsiColor.RED}${spring-boot.version} 
