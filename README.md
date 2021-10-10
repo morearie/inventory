@@ -1,4 +1,4 @@
-# [ARIE][1] Inventory
+http://localhost:8080/api/product/add-initial-# [ARIE][1] Inventory
 
 This application was generated using Spring-Boot 2.5.5, you can find documentation and help at [https://spring.io/projects/spring-boot][2].
 
@@ -89,9 +89,14 @@ password: admin
 ```
 
 ## SWAGGER UI (API docs)
+please read on Swagger for more details for each API.
+you may run postman runner to test concurrent for increase/decrease stock product
+
 ```
 http://localhost:8080/swagger-ui.html
-ex: http://localhost:8080/api/order/1
+POST http://localhost:8080/api/product/add-initial-data to add initial data order and products
+PUT http://localhost:8080/api/product/1/increase-stock/3 productId=1 and quantity to increase=3
+PUT http://localhost:8080/api/product/1/decrease-stock/2 productId=1 and quantity to decrease=3
 ```
 
 
